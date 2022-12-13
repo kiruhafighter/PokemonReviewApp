@@ -36,7 +36,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Country", b =>
@@ -53,7 +53,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Owner", b =>
@@ -83,7 +83,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Owners");
+                    b.ToTable("Owners", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Pokemon", b =>
@@ -103,7 +103,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pokemon");
+                    b.ToTable("Pokemon", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.PokemonCategory", b =>
@@ -118,7 +118,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("PokemonCategories");
+                    b.ToTable("PokemonCategories", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.PokemonOwner", b =>
@@ -133,7 +133,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("PokemonOwners");
+                    b.ToTable("PokemonOwners", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Review", b =>
@@ -167,7 +167,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Reviewer", b =>
@@ -188,7 +188,7 @@ namespace PokemonReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviewers");
+                    b.ToTable("Reviewers", (string)null);
                 });
 
             modelBuilder.Entity("PokemonReviewApp.Models.Owner", b =>
