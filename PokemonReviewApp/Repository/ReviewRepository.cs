@@ -22,11 +22,6 @@ namespace PokemonReviewApp.Repository
             return _context.Reviews.SingleOrDefault(r => r.Id == reviewId);
         }
 
-        public Review GetReviewByName(string reviewName) 
-        {
-            return _context.Reviews.SingleOrDefault(r => r.Title == reviewName);
-        }
-
         public ICollection<Review> GetReviewsOfAPokemon(int pokeid)
         {
             return _context.Reviews.Where(r=>r.Pokemon.Id== pokeid).ToList();
@@ -34,7 +29,7 @@ namespace PokemonReviewApp.Repository
 
         public ICollection<Review> GetReviewsOfAPokemonByName(string pokemonName)
         {
-            
+            return _context.Reviews.Where(r => r.Pokemon.Name == pokemonName).ToList();
         }
 
         public bool ReviewExists(int reviewId)
