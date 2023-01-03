@@ -8,7 +8,7 @@ namespace PokemonReviewApp.Repository
     public class OwnerRepository : IOwnerRepository
     {
         private readonly ApplicationDbContext _context;
-        public OwnerRepository(ApplicationDbContext context, IMapper mapper)
+        public OwnerRepository(ApplicationDbContext context)
         {
             _context = context;
         }

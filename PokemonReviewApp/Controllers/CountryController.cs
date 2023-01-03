@@ -146,5 +146,64 @@ namespace PokemonReviewApp.Controllers
             }
             return Ok(countryCreate);
         }
+
+        [HttpPut("{countryId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCountry(int countryId, [FromBody] CountryDto countryUpdate)
+        {
+            if (countryUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if (countryId != countryUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_countryRepository.CountryExists(countryId))
+            {
+                return BadRequest(ModelState);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var countryMap = _mapper.Map<Country>(countryUpdate);
+            if (!_countryRepository.UpdateCountry(countryMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating country");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(countryUpdate);
+        }
+
+
+        //[HttpPut]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(404)]
+        //public IActionResult UpdateCountry([FromBody] CountryDto countryUpdate)
+        //{
+        //    if (countryUpdate == null)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    if (!_countryRepository.CountryExists(countryUpdate.Id))
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    var countryMap = _mapper.Map<Country>(countryUpdate);
+        //    if (!_countryRepository.UpdateCountry(countryMap))
+        //    {
+        //        ModelState.AddModelError("", "Something went wrong while updating country");
+        //        return StatusCode(500, ModelState);
+        //    }
+        //    return Ok(countryUpdate);
+        //}
     }
 }
