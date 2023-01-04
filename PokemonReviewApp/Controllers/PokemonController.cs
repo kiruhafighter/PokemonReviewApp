@@ -14,14 +14,16 @@ namespace PokemonReviewApp.Controllers
         private readonly IPokemonRepository _pokemonRepository;
         private readonly IOwnerRepository _ownerRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public PokemonController (IPokemonRepository pokemonRepository, IMapper mapper, IOwnerRepository ownerRepository, ICategoryRepository categoryRepository)
+        public PokemonController (IPokemonRepository pokemonRepository, IMapper mapper, IOwnerRepository ownerRepository, ICategoryRepository categoryRepository, IReviewRepository reviewRepository)
         {
             _pokemonRepository = pokemonRepository;
             _mapper = mapper;
             _ownerRepository = ownerRepository;
             _categoryRepository = categoryRepository;
+            _reviewRepository = reviewRepository;
         }
 
         [HttpGet]
@@ -133,6 +135,35 @@ namespace PokemonReviewApp.Controllers
             return Ok(pokemonCreate);
         }
 
-
+        [HttpPut("{pokemonId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePokemon (int pokemonId,[FromBody] PokemonDto pokemonUpdate)
+        {
+            if(pokemonUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if(pokemonId != pokemonUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_pokemonRepository.PokemonExists(pokemonId))
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var pokemonMap = _mapper.Map<Pokemon>(pokemonUpdate);
+            if (!_pokemonRepository.UpdatePokemon(pokemonMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating pokemon");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(pokemonUpdate);
+        }
     }
 }

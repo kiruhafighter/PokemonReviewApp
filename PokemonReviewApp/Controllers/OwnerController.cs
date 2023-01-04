@@ -85,7 +85,7 @@ namespace PokemonReviewApp.Controllers
         }
         
         [HttpGet("{ownerId}/pokemon")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<PokemonDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemonByOwner(int ownerId) 
         {
@@ -93,7 +93,7 @@ namespace PokemonReviewApp.Controllers
             {
                 return NotFound();
             }
-            var pokemons = _mapper.Map<List<Pokemon>>(_ownerRepository.GetPokemonByOwner(ownerId));
+            var pokemons = _mapper.Map<List<PokemonDto>>(_ownerRepository.GetPokemonByOwner(ownerId));
             if(pokemons.Count == 0 || pokemons == null)
             {
                 return NotFound();
@@ -144,5 +144,35 @@ namespace PokemonReviewApp.Controllers
             return Ok(ownerCreate);
         }
 
+        [HttpPut("{ownerId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOwner(int ownerId,[FromBody] OwnerDto ownerUpdate)
+        {
+            if(ownerUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if(ownerId != ownerUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_ownerRepository.OwnerExists(ownerId))
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var ownerMap = _mapper.Map<Owner>(ownerUpdate);
+            if (!_ownerRepository.UpdateOwner(ownerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while updating owner");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(ownerUpdate);
+        }
     }
 }

@@ -41,12 +41,6 @@ namespace PokemonReviewApp.Repository
 
         public bool PokemonExists(int pokeId)
         {
-            //var pokemon = _context.Pokemon.SingleOrDefault(p => p.Id == pokeId);
-            //if(pokemon == null)
-            //{
-            //    return false;
-            //}
-            //return true;
             return _context.Pokemon.Any(p => p.Id == pokeId);
         }
 
@@ -69,6 +63,12 @@ namespace PokemonReviewApp.Repository
             _context.Add(pokemonCategory);
 
             _context.Add(pokemon);
+            return Save();
+        }
+
+        public bool UpdatePokemon(Pokemon pokemon)
+        {
+            _context.Update(pokemon);
             return Save();
         }
 
